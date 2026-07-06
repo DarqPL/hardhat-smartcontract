@@ -79,6 +79,7 @@ module.exports = {
   etherscan: {
     apiKey: {
       mainnet: "",
+      sepolia: process.env.ETHERSCAN_API || "",
     },
   },
   sourcify: {
