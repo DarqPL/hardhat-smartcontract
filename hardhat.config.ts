@@ -22,10 +22,7 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
   }
 });
 
-const {
-  TESTNET_PRIVATE_KEY: testnetPrivateKey,
-  MAINNET_PRIVATE_KEY: mainnetPrivateKey,
-} = process.env;
+const { TESTNET_PRIVATE_KEY: testnetPrivateKey, MAINNET_PRIVATE_KEY: mainnetPrivateKey } = process.env;
 const reportGas = process.env.REPORT_GAS;
 
 // You need to export an object to set up your config
@@ -36,18 +33,18 @@ const reportGas = process.env.REPORT_GAS;
  */
 module.exports = {
   networks: {
-    "sepolia": {
-      url: "https://eth-sepolia.public.blastapi.io",
+    sepolia: {
+      url: "https://ethereum-sepolia-rpc.publicnode.com",
       chainId: 11155111,
       accounts: [testnetPrivateKey],
       timeout: 40000,
     },
-    "ethereum": {
-      url: "https://eth-mainnet.public.blastapi.io",
+    ethereum: {
+      url: "https://ethereum-mainnet-rpc.publicnode.com",
       chainId: 1,
       accounts: [mainnetPrivateKey],
       timeout: 60000,
-    }
+    },
   },
   solidity: {
     compilers: [
@@ -58,9 +55,9 @@ module.exports = {
             enabled: true,
             runs: 1000,
           },
-          viaIR: true
+          viaIR: true,
         },
-      }
+      },
     ],
   },
   abiExporter: {
@@ -81,8 +78,8 @@ module.exports = {
   },
   etherscan: {
     apiKey: {
-      "mainnet": "",
-    }
+      mainnet: "",
+    },
   },
   sourcify: {
     // Disabled by default
