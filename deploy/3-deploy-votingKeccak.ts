@@ -11,11 +11,11 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   console.log("====================");
 
   console.log("====================");
-  console.log("Deploy Voting Contract");
+  console.log("Deploy VotingKeccak Contract");
   console.log("====================");
 
-  await deploy("Voting", {
-    contract: "Voting",
+  await deploy("VotingKeccak", {
+    contract: "VotingKeccak",
     args: [],
     from: deployer,
     log: true,

@@ -77,10 +77,7 @@ module.exports = {
     runOnCompile: true,
   },
   etherscan: {
-    apiKey: {
-      mainnet: "",
-      sepolia: process.env.ETHERSCAN_API || "",
-    },
+    apiKey: process.env.ETHERSCAN_API || "",
   },
   sourcify: {
     // Disabled by default

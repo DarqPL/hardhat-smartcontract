@@ -11,11 +11,11 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   console.log("====================");
 
   console.log("====================");
-  console.log("Deploy Voting Contract");
+  console.log("Deploy StudentRegistryV2 Contract");
   console.log("====================");
 
-  await deploy("Voting", {
-    contract: "Voting",
+  await deploy("StudentRegistryV2", {
+    contract: "StudentRegistryV2",
     args: [],
     from: deployer,
     log: true,
@@ -24,5 +24,5 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   });
 };
 
-func.tags = ["deploy", "Voting"];
+func.tags = ["deploy", "Student"];
 export default func;
