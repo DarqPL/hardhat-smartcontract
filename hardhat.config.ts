@@ -1,6 +1,9 @@
+import dotenv from "dotenv";
 import { configVariable, defineConfig, task } from "hardhat/config";
 import hardhatToolboxMochaEthers from "@nomicfoundation/hardhat-toolbox-mocha-ethers";
 import hardhatUpgrades from "@openzeppelin/hardhat-upgrades";
+
+dotenv.config();
 
 const accounts = task("accounts", "Print the accounts")
   .setInlineAction(async (_taskArgs, hre) => {
