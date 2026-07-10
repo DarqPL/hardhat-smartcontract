@@ -37,7 +37,7 @@ npx hardhat ignition deploy ignition/modules/Counter.ts
 Deploy to Sepolia:
 
 ```shell
-node --env-file .env node_modules/hardhat/dist/src/cli.js ignition deploy ignition/modules/Counter.ts --network sepolia --verify
+npx hardhat ignition deploy ignition/modules/Counter.ts --network sepolia --verify
 ```
 
 ## Verify
@@ -45,7 +45,7 @@ node --env-file .env node_modules/hardhat/dist/src/cli.js ignition deploy igniti
 After deploying via Ignition:
 
 ```shell
-node --env-file .env node_modules/hardhat/dist/src/cli.js ignition verify chain-11155111 --network sepolia
+npx hardhat ignition verify chain-11155111 --network sepolia
 ```
 
 ## Test
