@@ -1,11 +1,15 @@
-import { ethers } from "hardhat";
-import { Counter } from "../typechain";
+import hre from "hardhat";
 
 async function main() {
-  const [deployer] = await ethers.getSigners();
-  console.log("Deploying contracts with the account: ", deployer.address);
+  const { ethers } = await hre.network.getOrCreate();
 
-  const counter: Counter = await ethers.getContract("Counter");
+  const [deployer] = await ethers.getSigners();
+  console.log("Deploying contracts with the account:", deployer.address);
+
+  const Counter = await ethers.getContractFactory("Counter");
+  const counter = await Counter.deploy();
+  await counter.waitForDeployment();
+
   const tx = await counter.increment();
   await tx.wait();
 

@@ -1,51 +1,40 @@
-import { task } from "hardhat/config";
-import "@openzeppelin/hardhat-upgrades";
-import "@nomicfoundation/hardhat-verify";
-import "hardhat-contract-sizer";
-import "hardhat-abi-exporter";
-import "hardhat-gas-reporter";
-import * as dotenv from "dotenv";
-import "hardhat-deploy";
-import "hardhat-deploy-ethers";
-import "@nomicfoundation/hardhat-ethers";
-import "@typechain/hardhat";
+import { configVariable, defineConfig, task } from "hardhat/config";
+import hardhatToolboxMochaEthers from "@nomicfoundation/hardhat-toolbox-mocha-ethers";
+import hardhatUpgrades from "@openzeppelin/hardhat-upgrades";
 
-dotenv.config();
+const accounts = task("accounts", "Print the accounts")
+  .setInlineAction(async (_taskArgs, hre) => {
+    const { ethers } = await hre.network.create();
+    const signers = await ethers.getSigners();
+    for (const signer of signers) {
+      console.log(signer.address);
+    }
+  })
+  .build();
 
-// This is a sample Hardhat task. To learn how to create your own go to
-// https://hardhat.org/guides/create-task.html
-task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
-  const accounts = await hre.ethers.getSigners();
+export default defineConfig({
+  plugins: [hardhatToolboxMochaEthers, hardhatUpgrades],
 
-  for (const account of accounts) {
-    console.log(account.address);
-  }
-});
+  tasks: [accounts],
 
-const { TESTNET_PRIVATE_KEY: testnetPrivateKey, MAINNET_PRIVATE_KEY: mainnetPrivateKey } = process.env;
-const reportGas = process.env.REPORT_GAS;
-
-// You need to export an object to set up your config
-// Go to https://hardhat.org/config/ to learn more
-
-/**
- * @type import('hardhat/config').HardhatUserConfig
- */
-module.exports = {
   networks: {
+    default: {
+      type: "edr-simulated",
+    },
     sepolia: {
+      type: "http",
+      chainType: "l1",
       url: "https://ethereum-sepolia-rpc.publicnode.com",
-      chainId: 11155111,
-      accounts: [testnetPrivateKey],
-      timeout: 40000,
+      accounts: [configVariable("TESTNET_PRIVATE_KEY")],
     },
     ethereum: {
+      type: "http",
+      chainType: "l1",
       url: "https://ethereum-mainnet-rpc.publicnode.com",
-      chainId: 1,
-      accounts: [mainnetPrivateKey],
-      timeout: 60000,
+      accounts: [configVariable("MAINNET_PRIVATE_KEY")],
     },
   },
+
   solidity: {
     compilers: [
       {
@@ -60,40 +49,26 @@ module.exports = {
       },
     ],
   },
-  abiExporter: {
-    path: "data/abi",
-    runOnCompile: true,
-    clear: true,
-    flat: false,
-    only: [],
-    spacing: 4,
-  },
-  gasReporter: {
-    enabled: reportGas == "1",
-  },
-  contractSizer: {
-    alphaSort: true,
-    disambiguatePaths: false,
-    runOnCompile: true,
-  },
-  etherscan: {
-    apiKey: {
-      mainnet: "",
+
+  verify: {
+    etherscan: {
+      apiKey: configVariable("ETHERSCAN_API"),
     },
   },
-  sourcify: {
-    // Disabled by default
-    // Doesn't need an API key
-    enabled: false,
+
+  test: {
+    mocha: {
+      timeout: 40000,
+    },
+    solidity: {
+      fuzz: {
+        runs: 4,
+      },
+      invariant: {
+        runs: 4,
+        depth: 4,
+        failOnRevert: true,
+      },
+    },
   },
-  mocha: {
-    timeout: 40000,
-  },
-  namedAccounts: {
-    deployer: 0,
-  },
-  typechain: {
-    outDir: "typechain",
-    target: "ethers-v6",
-  },
-};
+});
